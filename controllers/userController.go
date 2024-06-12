@@ -3,10 +3,10 @@ package controllers
 import (
 	"errors"
 	"fmt"
-	"github.com/cjdriod/go-credit-card-verifier/Utils"
 	"github.com/cjdriod/go-credit-card-verifier/configs"
 	"github.com/cjdriod/go-credit-card-verifier/database"
 	"github.com/cjdriod/go-credit-card-verifier/models"
+	"github.com/cjdriod/go-credit-card-verifier/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
@@ -24,14 +24,14 @@ func RegisterUserController(c *gin.Context) {
 
 	err := c.BindJSON(&body)
 	if err != nil || body.Username == "" || body.Password == "" || body.Email == "" {
-		Utils.BadRequest(c, []string{accountCreateErr.Error()})
+		utils.BadRequest(c, []string{accountCreateErr.Error()})
 		return
 	}
 
 	hashPassword, hashErr := bcrypt.GenerateFromPassword([]byte(body.Password), 10)
 	if hashErr != nil {
 		fmt.Println("Bcrypt failed:", err)
-		Utils.BadRequest(c, []string{accountCreateErr.Error()})
+		utils.BadRequest(c, []string{accountCreateErr.Error()})
 		return
 	}
 
@@ -40,7 +40,7 @@ func RegisterUserController(c *gin.Context) {
 
 	if result.Error != nil {
 		fmt.Println("Database error:", result.Error)
-		Utils.BadRequest(c, []string{accountCreateErr.Error()})
+		utils.BadRequest(c, []string{accountCreateErr.Error()})
 		return
 	}
 
@@ -59,7 +59,7 @@ func LoginUserController(c *gin.Context) {
 
 	err := c.BindJSON(&body)
 	if err != nil {
-		Utils.BadRequest(c, []string{loginErr.Error()})
+		utils.BadRequest(c, []string{loginErr.Error()})
 		return
 	}
 
@@ -69,7 +69,7 @@ func LoginUserController(c *gin.Context) {
 	bcryptErr := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(body.Password))
 
 	if user.ID == 0 || bcryptErr != nil {
-		Utils.UnauthorizedRequest(c, []string{loginErr.Error()})
+		utils.UnauthorizedRequest(c, []string{loginErr.Error()})
 		return
 	}
 
@@ -81,7 +81,7 @@ func LoginUserController(c *gin.Context) {
 
 	if signErr != nil {
 		fmt.Println("JWT signature error:", signErr)
-		Utils.UnauthorizedRequest(c, []string{loginErr.Error()})
+		utils.UnauthorizedRequest(c, []string{loginErr.Error()})
 		return
 	}
 
@@ -99,7 +99,7 @@ func LogoutUserController(c *gin.Context) {
 	user, err := c.Get("user")
 
 	if !err {
-		Utils.UnauthorizedRequest(c, []string{unauthorizedErr.Error()})
+		utils.UnauthorizedRequest(c, []string{unauthorizedErr.Error()})
 		return
 	}
 	c.SetCookie("Authorization", "", -1, "/", "", configs.Constant.EnableHttpsMode, true)

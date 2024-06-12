@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/cjdriod/go-credit-card-verifier/Utils"
 	"github.com/cjdriod/go-credit-card-verifier/configs"
 	"github.com/cjdriod/go-credit-card-verifier/database"
 	"github.com/cjdriod/go-credit-card-verifier/models"
+	"github.com/cjdriod/go-credit-card-verifier/utils"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"net/http"
@@ -134,7 +134,7 @@ func GetCardInfoController(c *gin.Context) {
 	cardNumber := c.Param("cardNumber")
 
 	if len(cardNumber) > 19 || len(cardNumber) < 14 {
-		Utils.BadRequest(c, []string{invalidBankCardErr.Error()})
+		utils.BadRequest(c, []string{invalidBankCardErr.Error()})
 		return
 	}
 
@@ -149,7 +149,7 @@ func GetCardInfoController(c *gin.Context) {
 	)
 
 	if !isValidCard {
-		Utils.BadRequest(c, []string{invalidBankCardErr.Error()})
+		utils.BadRequest(c, []string{invalidBankCardErr.Error()})
 		return
 	}
 
@@ -217,7 +217,7 @@ func ReportCardFraudController(c *gin.Context) {
 
 	err := c.BindJSON(&body)
 	if err != nil || body.CardNumber == "" || body.Reason == "" {
-		Utils.BadRequest(c, []string{reportFailedErr.Error()})
+		utils.BadRequest(c, []string{reportFailedErr.Error()})
 		return
 	}
 	fmt.Println(body)
@@ -226,7 +226,7 @@ func ReportCardFraudController(c *gin.Context) {
 
 	if result.Error != nil {
 		fmt.Println("Database error:", result.Error)
-		Utils.BadRequest(c, []string{reportFailedErr.Error()})
+		utils.BadRequest(c, []string{reportFailedErr.Error()})
 		return
 	}
 
@@ -248,7 +248,7 @@ func BlackListCardController(c *gin.Context) {
 
 	user, err := c.Get("user")
 	if bindErr := c.BindJSON(&body); !err || bindErr != nil || body.CardNumber == "" {
-		Utils.BadRequest(c, []string{reportFailedErr.Error()})
+		utils.BadRequest(c, []string{reportFailedErr.Error()})
 		return
 	}
 
@@ -302,7 +302,7 @@ func BlackListCardController(c *gin.Context) {
 
 	if databaseErr != nil {
 		fmt.Println("Database error:", databaseErr)
-		Utils.BadRequest(c, []string{reportFailedErr.Error()})
+		utils.BadRequest(c, []string{reportFailedErr.Error()})
 		return
 	}
 
