@@ -1,6 +1,7 @@
 package api
 
 import (
+	"github.com/cjdriod/go-credit-card-verifier/configs"
 	"github.com/cjdriod/go-credit-card-verifier/controllers"
 	"github.com/cjdriod/go-credit-card-verifier/middlewares"
 	"github.com/gin-gonic/gin"
@@ -33,7 +34,7 @@ func InitServer() *RestServer {
 }
 
 func (s RestServer) Serve() {
-	if err := s.router.Run(); err != nil {
+	if err := s.router.Run(configs.Constant.Host); err != nil {
 		log.Fatal(err)
 	}
 }

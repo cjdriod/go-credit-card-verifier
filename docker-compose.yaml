@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  database:
+    image: mysql:latest
+    container_name: "mysql_db"
+    restart: always
+    ports:
+      - "${MYSQL_PORT}:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DB_NAME}
+      MYSQL_USER: ${MYSQL_ACC}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      retries: 5
+    volumes:
+      - ./database_file:/var/lib/mysql
+
+  api_server:
+    container_name: "rest_api_server"
+    depends_on:
+      database:
+        condition: service_healthy
+    build: .
+    ports:
+      - "${APP_SERVER_PORT}:8080"
+    environment:
+      MYSQL_ACC: ${MYSQL_ACC}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_HOST: database
+      MYSQL_PORT: 3306
+      MYSQL_DB_NAME: ${MYSQL_DB_NAME}
+      ENABLE_PREMIUM_CARD_CHECK: ${ENABLE_PREMIUM_CARD_CHECK}
+      JWT_SECRET: ${JWT_SECRET}
+      HTTPS_MODE: ${HTTPS_MODE:-true}
+      APP_SERVER_DOMAIN: ${APP_SERVER_DOMAIN}
+      APP_SERVER_PORT: ${APP_SERVER_PORT}
+      GIN_MODE: ${GIN_MODE:-debug}
+      ENV: "Production"

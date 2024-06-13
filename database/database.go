@@ -13,9 +13,8 @@ func ConnectDatabase() {
 	var err error
 	DB, err = gorm.Open(mysql.Open(configs.Constant.MySqlConnectionString), &gorm.Config{})
 	if err != nil {
-		panic("failed to connect sqlLite database")
+		panic("failed to connect mySql database")
 	}
-
 }
 
 func SyncDatabase() {

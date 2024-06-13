@@ -18,6 +18,7 @@ type Config struct {
 	MySqlConnectionString  string
 	JwtSecret              []byte
 	EnableHttpsMode        bool
+	Host                   string
 }
 
 var Constant = initConfig()
@@ -45,9 +46,11 @@ func getEnv(key, fallback string) string {
 }
 
 func initConfig() Config {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
+	if os.Getenv("ENV") != "Production" {
+		err := godotenv.Load()
+		if err != nil {
+			log.Fatal("Error loading .env file")
+		}
 	}
 
 	return Config{
@@ -59,5 +62,6 @@ func initConfig() Config {
 		MySqlConnectionString:  getMySqlConnectionString(),
 		JwtSecret:              []byte(getEnv("JWT_SECRET", "")),
 		EnableHttpsMode:        getEnv("HTTPS_MODE", "") == "true",
+		Host:                   fmt.Sprintf("%s:%s", getEnv("APP_SERVER_DOMAIN", ""), getEnv("APP_SERVER_PORT", "")),
 	}
 }

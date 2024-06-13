@@ -287,9 +287,9 @@ func BlackListCardController(c *gin.Context) {
 		if hasChanges {
 			var event string
 			if body.IsChecked {
-				event = fmt.Sprintf("Event: Card BAN since %v", time.Now().UTC())
+				event = fmt.Sprintf("Event: Card BAN since %s", time.Now().UTC())
 			} else {
-				event = fmt.Sprintf("Event: Card un-BAN since %v", time.Now().UTC())
+				event = fmt.Sprintf("Event: Card un-BAN since %s", time.Now().UTC())
 			}
 
 			if err := tx.Create(&models.CardActivity{CardType: body.CardType, CardNumber: body.CardNumber, Event: event}).Error; err != nil {
@@ -308,6 +308,6 @@ func BlackListCardController(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, gin.H{
 		"status":  configs.Constant.ApiStatus.Success,
-		"message": fmt.Sprintf("This card (%v)is recorded successfully", body.CardNumber),
+		"message": fmt.Sprintf("This card (%s)is recorded successfully", body.CardNumber),
 	})
 }

@@ -31,7 +31,7 @@ func RequireAuthentication(c *gin.Context) {
 
 	token, tokenErr := jwt.Parse(authenticationToken, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+			return nil, fmt.Errorf("unexpected signing method: %s", token.Header["alg"])
 		}
 
 		return configs.Constant.JwtSecret, nil

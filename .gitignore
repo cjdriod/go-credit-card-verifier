@@ -23,3 +23,6 @@ go.work
 
 # environment file
 .env
+
+#local db file
+database_file/
