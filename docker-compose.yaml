@@ -6,7 +6,7 @@ services:
     container_name: "mysql_db"
     restart: always
     ports:
-      - "${MYSQL_PORT}:3306"
+      - "${MYSQL_PORT:-3306}:3306"
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DB_NAME}
@@ -26,7 +26,7 @@ services:
         condition: service_healthy
     build: .
     ports:
-      - "${APP_SERVER_PORT}:8080"
+      - "${APP_SERVER_PORT:-8080}:8080"
     environment:
       MYSQL_ACC: ${MYSQL_ACC}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
@@ -37,6 +37,6 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       HTTPS_MODE: ${HTTPS_MODE:-true}
       APP_SERVER_DOMAIN: ${APP_SERVER_DOMAIN}
-      APP_SERVER_PORT: ${APP_SERVER_PORT}
+      APP_SERVER_PORT: ${APP_SERVER_PORT:-8080}
       GIN_MODE: ${GIN_MODE:-debug}
       ENV: "Production"

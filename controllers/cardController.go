@@ -183,7 +183,7 @@ func GetCardInfoController(c *gin.Context) {
 		activities = append(activities, activity.Event)
 	}
 
-	message := "Valid (debit/credit) card number"
+	message := fmt.Sprintf("%v card activitie(s) found", len(activities))
 	switch {
 	case isBlackListCard:
 		message = "This is a black listed credit/debit card"

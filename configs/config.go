@@ -27,7 +27,7 @@ func getMySqlConnectionString() string {
 	userName := getEnv("MYSQL_ACC", "")
 	password := getEnv("MYSQL_PASSWORD", "")
 	host := getEnv("MYSQL_HOST", "")
-	port := getEnv("MYSQL_PORT", "")
+	port := getEnv("MYSQL_PORT", "3306")
 	dbName := getEnv("MYSQL_DB_NAME", "")
 	parseTime := "true"
 	charset := "utf8mb4"
@@ -58,10 +58,10 @@ func initConfig() Config {
 			Success: "success",
 			Fail:    "failed",
 		},
-		EnablePremiumCardCheck: getEnv("ENABLE_PREMIUM_CARD_CHECK", "") == "true",
+		EnablePremiumCardCheck: getEnv("ENABLE_PREMIUM_CARD_CHECK", "false") == "true",
 		MySqlConnectionString:  getMySqlConnectionString(),
 		JwtSecret:              []byte(getEnv("JWT_SECRET", "")),
-		EnableHttpsMode:        getEnv("HTTPS_MODE", "") == "true",
-		Host:                   fmt.Sprintf("%s:%s", getEnv("APP_SERVER_DOMAIN", ""), getEnv("APP_SERVER_PORT", "")),
+		EnableHttpsMode:        getEnv("HTTPS_MODE", "true") == "true",
+		Host:                   fmt.Sprintf("%s:%s", getEnv("APP_SERVER_DOMAIN", ""), getEnv("APP_SERVER_PORT", "8080")),
 	}
 }
