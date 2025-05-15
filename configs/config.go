@@ -12,8 +12,14 @@ type ApiStatus struct {
 	Fail    string
 }
 
+type CardBlackListAction struct {
+	Ban   string
+	Unban string
+}
+
 type Config struct {
-	ApiStatus
+	ApiStatus              ApiStatus
+	CardBlackListAction    CardBlackListAction
 	EnablePremiumCardCheck bool
 	MySqlConnectionString  string
 	JwtSecret              []byte
@@ -31,7 +37,7 @@ func getMySqlConnectionString() string {
 	dbName := getEnv("MYSQL_DB_NAME", "")
 	parseTime := "true"
 	charset := "utf8mb4"
-	location := "Local"
+	location := "UTC"
 	return fmt.Sprintf(
 		"%s:%s@tcp(%s:%s)/%s?parseTime=%s&charset=%s&loc=%s",
 		userName, password, host, port, dbName, parseTime, charset, location,
@@ -55,8 +61,12 @@ func initConfig() Config {
 
 	return Config{
 		ApiStatus: ApiStatus{
-			Success: "success",
-			Fail:    "failed",
+			Success: "Success",
+			Fail:    "Fail",
+		},
+		CardBlackListAction: CardBlackListAction{
+			Ban:   "Ban",
+			Unban: "UnBan",
 		},
 		EnablePremiumCardCheck: getEnv("ENABLE_PREMIUM_CARD_CHECK", "false") == "true",
 		MySqlConnectionString:  getMySqlConnectionString(),

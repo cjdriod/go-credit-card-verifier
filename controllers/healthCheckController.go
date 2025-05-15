@@ -7,18 +7,10 @@ import (
 	"time"
 )
 
-type HealthCheckResponse struct {
-	Status    string    `json:"status"`
-	Message   string    `json:"message"`
-	TimeStamp time.Time `json:"timeStamp"`
-}
-
 func HealthCheckController(c *gin.Context) {
-	data := HealthCheckResponse{
-		Status:    configs.Constant.ApiStatus.Success,
-		Message:   "Hello World!",
-		TimeStamp: time.Now(),
-	}
-
-	c.JSON(http.StatusOK, data)
+	c.JSON(http.StatusOK, gin.H{
+		"status":    configs.Constant.ApiStatus.Success,
+		"message":   "Hello World!",
+		"timeStamp": time.Now(),
+	})
 }

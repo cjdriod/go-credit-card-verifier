@@ -35,3 +35,10 @@ func SyncDatabase() {
 		panic("failed to initialized cardActivity table")
 	}
 }
+
+func GetDB(transaction *gorm.DB) *gorm.DB {
+	if transaction == nil {
+		return DB
+	}
+	return transaction
+}
