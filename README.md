@@ -1,8 +1,8 @@
 # GoLang Dummy Credit Card Verification REST Endpoint System
 
-This is a simple GoLang application that provides a RESTful API for credit card verification. 
-It includes endpoints to perform various operations related to credit card verification, 
-such as validating a credit card number, checking the card type, checking card history, 
+This is a simple GoLang application that provides a RESTful API for credit card verification.
+It includes endpoints to perform various operations related to credit card verification,
+such as validating a credit card number, checking the card type, checking card history,
 and identify black listed card.
 
 ## **Features**
@@ -14,6 +14,7 @@ and identify black listed card.
 
 ![Language](https://img.shields.io/github/languages/top/cjdriod/go-credit-card-verifier?style=flat-square)
 ![Size](https://img.shields.io/github/repo-size/cjdriod/go-credit-card-verifier?style=flat-square)
+
 ## 🔨Installation
 
 1. **Clone the Repository**:
@@ -33,13 +34,16 @@ and identify black listed card.
     ```bash
     go build -o main
     ```
+
 ## **⛷️ Run application**
 
 ### With Docker
+
  ```bash
  // Run
 docker-compose up -d --build
-
+```
+ ```bash
 // Shutdown
 docker-compose down -v --rmi all --remove-orphans   
 ```
@@ -51,6 +55,7 @@ go run .\cmd
 ```
 
 ### With binary file
+
 ```bash
 ./main
 ```
@@ -73,7 +78,10 @@ go run .\cmd
 | ENV                       | Environment mode (Production / Development) |               |   
 
 ## ⚔️ **Contributing**
-Contributions are welcome! If you'd like to contribute to this project, please feel free to open a pull request or submit an issue with your suggestions or changes.
+
+Contributions are welcome! If you'd like to contribute to this project, please feel free to open a pull request or
+submit an issue with your suggestions or changes.
 
 ## 📝 **License**
+
 This project is licensed under the MIT License - see the LICENSE file for details.
